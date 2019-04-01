@@ -21,7 +21,7 @@ end
 ---@param s string
 ---@return string
 function string.trim(s)
-    return s:trimright():trimright()
+    return s:trimleft():trimright()
 end
 
 ---split

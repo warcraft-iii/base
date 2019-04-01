@@ -4,7 +4,7 @@
 -- @Date   : 3/11/2019, 10:53:10 PM
 
 local type, rawget, rawequal, setmetatable = type, rawget, rawequal, setmetatable
-local shallowcopy                          = table.shallowcopy
+local shallowcopy = table.shallowcopy
 
 local function constructor(obj, cls, ...)
     if not cls then
@@ -34,7 +34,7 @@ end
 ---@class object
 local object = {}
 
-object.meta  = { __index = object, __type = object, __name = 'object' }
+object.meta = { __index = object, __type = object, __name = 'object' }
 
 ---getSuper
 ---@return object
@@ -139,15 +139,15 @@ function class(name, super)
     if super and not isClass(super) then
         error('bad argument #2 to `class` (class expected)', 2)
     end
-    super        = super or object
-    local cls    = setmetatable({}, super.meta)
-    local meta   = shallowcopy(super.meta)
+    super = super or object
+    local cls = setmetatable({}, super.meta)
+    local meta = shallowcopy(super.meta)
 
-    cls.meta     = meta
+    cls.meta = meta
     meta.__super = super
     meta.__index = cls
-    meta.__type  = cls
-    meta.__name  = name
+    meta.__type = cls
+    meta.__name = name
 
     inherit(cls, super)
     _G[name] = cls

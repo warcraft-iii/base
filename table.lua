@@ -16,12 +16,12 @@ local function riter(t, i)
     end
 end
 
----ripais
+---ripairs
 ---@generic V
 ---@param t array
 ---@return fun(t:array):number,V
-function ripais(t)
-    return riter, #t + 1
+function ripairs(t)
+    return riter, t, #t + 1
 end
 
 ---spairs
@@ -29,12 +29,12 @@ end
 ---@param t table<string, V>|V[]
 ---@return fun(tbl: table<string, V>):string, V
 function spairs(t)
-    local i    = 0
+    local i = 0
     local keys = table.keys(t)
     table.sort(keys)
 
     return function()
-        i       = i + 1
+        i = i + 1
         local k = keys[i]
         if k then
             return k, t[k]
@@ -166,6 +166,27 @@ function table.keys(t)
     local r = {}
     for k in pairs(t) do
         table.insert(r, k)
+    end
+    return r
+end
+
+---join
+---@generic T
+---@vararg T
+---@return T
+function table.join(...)
+    local r = {}
+    local t
+
+    for i = 1, select('#', ...) do
+        t = select(i, ...)
+        if type(t) == 'table' then
+            for _, v in ipairs(t) do
+                table.insert(r, v)
+            end
+        else
+            table.insert(r, t)
+        end
     end
     return r
 end
