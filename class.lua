@@ -49,7 +49,7 @@ function object:getType()
 end
 
 local function new(cls, ...)
-    if not isClass(self) then
+    if not isClass(cls) then
         error('bad argument #self to `new` (class expected)')
     end
     return constructor(setmetatable({}, cls.meta), cls, ...)
