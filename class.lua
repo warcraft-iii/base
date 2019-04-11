@@ -49,19 +49,27 @@ function object:getType()
 end
 
 local function new(cls, ...)
+    if not isClass(self) then
+        error('bad argument #self to `new` (class expected)')
+    end
     return constructor(setmetatable({}, cls.meta), cls, ...)
 end
 
-local function first_new(cls, ...)
-    local destructor = rawget(cls, 'destructor')
-    if destructor then
-        cls.meta.__gc = destructor
+---new
+---@generic T
+---@return T
+function object:new(...)
+    if not isClass(self) then
+        error('bad argument #self to `new` (class expected)')
     end
-    cls.new = new
-    return new(cls, ...)
-end
 
-object.new = first_new
+    local destructor = rawget(self, 'destructor')
+    if destructor then
+        self.meta.__gc = destructor
+    end
+    self.new = new
+    return new(self, ...)
+end
 
 ---isClass
 ---@param cls any
@@ -144,6 +152,7 @@ function class(name, super)
     local meta = shallowcopy(super.meta)
 
     cls.meta = meta
+    meta.__gc = nil
     meta.__super = super
     meta.__index = cls
     meta.__type = cls
