@@ -159,6 +159,5 @@ function class(name, super)
     meta.__name = name
 
     inherit(cls, super)
-    _G[name] = cls
     return cls
 end
